@@ -1,3 +1,7 @@
+package app;
+
+
+
 import java.util.Random;
 
 
@@ -5,7 +9,7 @@ public abstract class NetworkSimulator
 {
     // This constant controls the maximum size of the buffer in a Message
     // and in a Packet
-    public static final int MAXDATASIZE = 20;
+    public static final int MAXDATASIZE = 10;
     
     // These constants are possible events
     public static final int TIMERINTERRUPT = 0;
@@ -171,22 +175,22 @@ public abstract class NetworkSimulator
                     // Let the student handle the new message
                     int code = aOutput(new Message(new String(nextMessage)));
 
-				    // if message correctly buffered, go on to the next message
-				    if (code > 0) {
-					// Increment the message counter
-						nSim++;
-						
-						if (traceLevel >= 2)
-					    {
-							System.out.println("FROMLAYER5: data accepted by layer 4 (student code)");
-					    }
-					} 
-				    else {
-						if (traceLevel >= 2)
-					    {
-							System.out.println("FROMLAYER5: data NOT accepted by layer 4 (student code)");
-					    }
-				    }
+                    // if message correctly buffered, go on to the next message
+                    if (code > 0) {
+                        // Increment the message counter
+                                nSim++;
+
+                                if (traceLevel >= 2)
+                            {
+                                        System.out.println("FROMLAYER5: data accepted by layer 4 (student code)");
+                            }
+                        } 
+                    else {
+                                if (traceLevel >= 2)
+                            {
+                                        System.out.println("FROMLAYER5: data NOT accepted by layer 4 (student code)");
+                            }
+                    }
 
                     break;
                     
