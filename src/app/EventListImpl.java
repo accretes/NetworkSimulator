@@ -1,5 +1,3 @@
-package app;
-
 import java.util.Vector;
 
 public class EventListImpl implements EventList

@@ -1,5 +1,3 @@
-package app;
-
 public class Message
 {
     private String data;

@@ -1,19 +1,5 @@
-package app;
-
 public class StudentNetworkSimulator extends NetworkSimulator
 {
-
-    private int seqNum;
-    private Packet lastPacket;
-    //private int ackNum;
-    //private boolean isWaiting;
-    private boolean lastMessageAckd;
-
-    
-    private Message lastMessage;
-    //private double timeout;
-    //private int ackB;
-    
     /*
      * Predefined Constants (static member variables):
      *
@@ -117,26 +103,14 @@ public class StudentNetworkSimulator extends NetworkSimulator
     @Override
     protected int aOutput(Message message)
     {
+    	//***GETTING STARTED***
+    	//To get started, construct a new Packet object containing the data in message
+    	//Then send this toLayer3
+    	//Then return 1 to indicate the message has been accepted and sent
         
-//        if (message.getData() != lastMessage.getData()) {
-//            seqNum++;
-//        } 
-        String temp = message.getData();
-        int checksum = calChecksum(temp);
-        //int currentSeqNum = 0;
-        
-        if (lastMessageAckd = true) {
-            Packet p = new Packet(seqNum,0,checksum,message.getData());
-            lastPacket = p;
-            lastMessage = message;
-            toLayer3(A,p);
-            seqNum++;
-            lastMessageAckd = false;
-        } else {
-            toLayer3(A,lastPacket);
-        }
-        //startTimer(A,timeout);
-        
+        Packet p = new Packet(0,0,0,message.getData());
+        toLayer3(A,p);
+          
         return 1;
     }
     
@@ -149,24 +123,7 @@ public class StudentNetworkSimulator extends NetworkSimulator
     	//***GETTING STARTED***
     	// To get started, extract the payload from the packet
     	// and then send it up toLayer5
-        
-        String temp = new String(packet.getPayload());
-        //Message message = new Message(temp);
-        
-        int checksum = calChecksum(temp);
-        
-        
-        
-        if (checksum == packet.getChecksum()) {
-            System.out.println("yo: Received checksum: " + packet.getChecksum() + ". Calculated checksum: " + checksum + ". Received payload: " + packet.getPayload());
-            toLayer5(B,new Message(packet.getPayload()));
-            Packet p = new Packet(0,1,0);
-            toLayer3(B,p);
-        } else {
-            System.out.println("yo: Received checksum: " + packet.getChecksum() + ". Calculated checksum: " + checksum + ". Received payload: " + packet.getPayload());
-            Packet p = new Packet(0,0,0);
-            toLayer3(B,p);
-        }
+           toLayer5(B,new Message(packet.getPayload()));
     }
     
     // This routine will be called whenever a packet sent from the B-side 
@@ -176,20 +133,7 @@ public class StudentNetworkSimulator extends NetworkSimulator
     protected void aInput(Packet packet)
     {
     	//***GETTING STARTED***
-    	// This will be needed later, when dealing with acknowledgments sent from B
-        //stopTimer(A);
-        
-        Packet p = packet;
-        
-        if (p.getAcknum() == 1) {
-            lastMessageAckd = true;
-            toLayer5(A,"ACKED");
-        } else if (p.getAcknum() == 0) { // && p.getPayload().equalsIgnoreCase("")
-            lastMessageAckd = false;
-            aOutput(lastMessage);
-            toLayer5(A,"NACKED. RESENDING PACKETS");
-        }
-        
+    	// This will be needed later, when dealing with acknowledgments sent from B 
     	
     }
     
@@ -201,7 +145,6 @@ public class StudentNetworkSimulator extends NetworkSimulator
     {
     	//***GETTING STARTED***
     	// This will be needed later, to deal with lost packets
-        toLayer5(A,"hello");
     }
     
     // This routine will be called once, before any of your other A-side 
@@ -212,12 +155,6 @@ public class StudentNetworkSimulator extends NetworkSimulator
     {
     	//***GETTING STARTED***
     	// This will be needed later
-        
-        //isWaiting = false;
-        seqNum = 0;
-        //timeout = 400;
-        //ackNum = 0;
-        lastMessageAckd = true;
     }
     
     
@@ -230,25 +167,5 @@ public class StudentNetworkSimulator extends NetworkSimulator
     {
     	//***GETTING STARTED***
     	// This will be needed later
-    }
-    
-//    protected int calChecksum(Message message) {
-//        int checksum = 0;
-//        
-//        for (int i = 0; i < message.getData().length(); i++) {
-//            checksum += message.getData().charAt(i);
-//        }
-//        
-//        return checksum;
-//    }
-    
-    protected int calChecksum(String message) {
-        int checksum = 0;
-        
-        for (int i = 0; i < message.length(); i++) {
-            checksum += message.charAt(i);
-        }
-        
-        return checksum;
     }
 }

@@ -1,5 +1,3 @@
-package app;
-
 import java.io.*;
 
 public class Project
