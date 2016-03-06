@@ -1,3 +1,5 @@
+package app;
+
 public class Event
 {
     private double time;
