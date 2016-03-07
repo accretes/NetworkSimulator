@@ -11,7 +11,7 @@ public class StudentNetworkSimulator extends NetworkSimulator
 
     
     private Message lastMessage;
-    //private double timeout;
+    private double timeout;
     //private int ackB;
     
     /*
@@ -135,7 +135,10 @@ public class StudentNetworkSimulator extends NetworkSimulator
         } else {
             toLayer3(A,lastPacket);
         }
-        //startTimer(A,timeout);
+        
+    // start the timer:
+    // whether a new packet has been sent or the last packet is resent
+        startTimer(A,timeout);
         
         return 1;
     }
@@ -177,7 +180,7 @@ public class StudentNetworkSimulator extends NetworkSimulator
     {
     	//***GETTING STARTED***
     	// This will be needed later, when dealing with acknowledgments sent from B
-        //stopTimer(A);
+        stopTimer(A);
         
         Packet p = packet;
         
@@ -201,7 +204,9 @@ public class StudentNetworkSimulator extends NetworkSimulator
     {
     	//***GETTING STARTED***
     	// This will be needed later, to deal with lost packets
-        toLayer5(A,"hello");
+        lastMessageAckd = false;
+        aOutput(lastMessage);
+        toLayer5(A,"TIMER EXPIRED: RESENDING PACKETS");
     }
     
     // This routine will be called once, before any of your other A-side 
@@ -215,7 +220,7 @@ public class StudentNetworkSimulator extends NetworkSimulator
         
         isWaiting = true;
         seqNum = 0;
-        //timeout = 400;
+        timeout = 100;
         //ackNum = 0;
         lastMessageAckd = true;
     }
