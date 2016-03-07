@@ -6,7 +6,7 @@ public class StudentNetworkSimulator extends NetworkSimulator
     private int seqNum;
     private Packet lastPacket;
     //private int ackNum;
-    //private boolean isWaiting;
+    private boolean isWaiting;
     private boolean lastMessageAckd;
 
     
@@ -213,7 +213,7 @@ public class StudentNetworkSimulator extends NetworkSimulator
     	//***GETTING STARTED***
     	// This will be needed later
         
-        //isWaiting = false;
+        isWaiting = true;
         seqNum = 0;
         //timeout = 400;
         //ackNum = 0;
@@ -251,4 +251,16 @@ public class StudentNetworkSimulator extends NetworkSimulator
         
         return checksum;
     }
+    
+    /*
+    protected boolean compareChecksum(Int rcvChecksum, Int calChecksum) {
+        Boolean isRight = false;
+    
+        if (rcvChecksum == calChecksum) {
+            isRight = true;
+        }   
+    
+        return isRight;
+    }
+    */
 }
