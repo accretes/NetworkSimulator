@@ -179,12 +179,12 @@ public class StudentNetworkSimulator extends NetworkSimulator
     	// This will be needed later, when dealing with acknowledgments sent from B
         //stopTimer(A);
         
-        Packet p = packet;
+        int ackNum = packet.getAcknum();
         
-        if (p.getAcknum() == 1) {
+        if (ackNum == 1) {
             lastMessageAckd = true;
             toLayer5(A,"ACKED");
-        } else if (p.getAcknum() == 0) { // && p.getPayload().equalsIgnoreCase("")
+        } else if (ackNum == 0) { // && p.getPayload().equalsIgnoreCase("")
             lastMessageAckd = false;
             aOutput(lastMessage);
             toLayer5(A,"NACKED. RESENDING PACKETS");
