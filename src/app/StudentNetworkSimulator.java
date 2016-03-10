@@ -125,19 +125,20 @@ public class StudentNetworkSimulator extends NetworkSimulator
         int checksum = calChecksum(temp);
         //int currentSeqNum = 0;
         
-        if (lastMessageAckd = true) {
+        if (lastMessageAckd) {
             Packet p = new Packet(seqNum,0,checksum,message.getData());
             lastPacket = p;
             lastMessage = message;
             toLayer3(A,p);
             seqNum++;
             lastMessageAckd = false;
+            return 1;
         } else {
-            toLayer3(A,lastPacket);
+            return 0;
         }
         //startTimer(A,timeout);
         
-        return 1;
+        
     }
     
     // This routine will be called whenever a packet sent from the A-side 
@@ -150,7 +151,7 @@ public class StudentNetworkSimulator extends NetworkSimulator
     	// To get started, extract the payload from the packet
     	// and then send it up toLayer5
         
-        String temp = new String(packet.getPayload());
+        String temp = packet.getPayload();
         //Message message = new Message(temp);
         
         int checksum = calChecksum(temp);
@@ -158,12 +159,12 @@ public class StudentNetworkSimulator extends NetworkSimulator
         
         
         if (checksum == packet.getChecksum()) {
-            System.out.println("yo: Received checksum: " + packet.getChecksum() + ". Calculated checksum: " + checksum + ". Received payload: " + packet.getPayload());
+            System.out.println("good yo: Received checksum: " + packet.getChecksum() + ". Calculated checksum: " + checksum + ". Received payload: " + packet.getPayload());
             toLayer5(B,new Message(packet.getPayload()));
             Packet p = new Packet(0,1,0);
             toLayer3(B,p);
         } else {
-            System.out.println("yo: Received checksum: " + packet.getChecksum() + ". Calculated checksum: " + checksum + ". Received payload: " + packet.getPayload());
+            System.out.println("bad yo: Received checksum: " + packet.getChecksum() + ". Calculated checksum: " + checksum + ". Received payload: " + packet.getPayload());
             Packet p = new Packet(0,0,0);
             toLayer3(B,p);
         }
@@ -183,11 +184,11 @@ public class StudentNetworkSimulator extends NetworkSimulator
         
         if (ackNum == 1) {
             lastMessageAckd = true;
-            toLayer5(A,"ACKED");
+            //toLayer5(A,"ACKED");
         } else if (ackNum == 0) { // && p.getPayload().equalsIgnoreCase("")
             lastMessageAckd = false;
-            aOutput(lastMessage);
-            toLayer5(A,"NACKED. RESENDING PACKETS");
+            toLayer3(A,lastPacket);
+            //toLayer5(A,"NACKED. RESENDING PACKETS");
         }
         
     	
